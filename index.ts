@@ -83,11 +83,24 @@ function initMap(): void {
     }
 
     let yearAndMonth: {year: number, month: number}[] = [
+      {"year": 2019, "month": 10},
+      {"year": 2019, "month": 11},
+      {"year": 2019, "month": 12},
+      {"year": 2020, "month": 1},
+      {"year": 2020, "month": 2},
+      {"year": 2020, "month": 3},
+      {"year": 2020, "month": 10},
+      {"year": 2020, "month": 11},
+      {"year": 2020, "month": 12},
+      {"year": 2021, "month": 1},
+      {"year": 2021, "month": 2},
+      {"year": 2021, "month": 3},
       {"year": 2021, "month": 10},
       {"year": 2021, "month": 11},
       {"year": 2021, "month": 12},
       {"year": 2022, "month": 1},
       {"year": 2022, "month": 2},
+      {"year": 2022, "month": 3}
     ];
 
     yearAndMonth.forEach(function(value){

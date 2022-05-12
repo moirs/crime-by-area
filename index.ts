@@ -82,31 +82,51 @@ function initMap(): void {
       results.innerHTML += polygon.getPath().getAt(i).toUrlValue(6) + "<br>";
     }
 
-    let apiUri = createPoliceApiUri(coords);
-    results.innerHTML += `<br />${apiUri}`;
+    let yearAndMonth: {year: number, month: number}[] = [
+      {"year": 2021, "month": 10},
+      {"year": 2021, "month": 11},
+      {"year": 2021, "month": 12},
+      {"year": 2022, "month": 1},
+      {"year": 2022, "month": 2},
+    ];
+
+    yearAndMonth.forEach(function(value){
+      let apiUri = createPoliceApiUri(coords, value.year, value.month);      
+      api<Crime[]>(apiUri)
+      .then(crimes => {
+      results.innerHTML += `<h2>For year:${value.year} and month:${value.month}</h2>`
+      crimes.forEach(function(value){        
+        results.innerHTML += `<br />${JSON.stringify(value)}`
+      })      
+     });
+    });
+
+    //let apiUri = createPoliceApiUri(coords, 2021, 10);
+    //results.innerHTML += `<br />${apiUri}`;
     
-    let responseData = '';
+    //let responseData = '';
     //let foobar = api<Crime[]>(apiUri)
     //.then(crimes => { responseData += crimes.map(c => c.category) });    
 
-    let foobar = api<Crime[]>(apiUri)
-    .then(crimes => {
-      crimes.forEach(function(value){
-        results.innerHTML += `<br />${JSON.stringify(value)}`
-      })      
-     });   
+    //let foobar = api<Crime[]>(apiUri)
+    //.then(crimes => {
+    //  crimes.forEach(function(value){
+    //    results.innerHTML += `<br />${JSON.stringify(value)}`
+    //  })      
+    // });   
 
   });
 
   drawingManager.setMap(map);
 }
 
-function createPoliceApiUri(polyCoords: any){
+function createPoliceApiUri(polyCoords: any, year: number, month: number){
+  var zeroFilledMonth = ('00' + month).slice(-2);
   var coordsString = '';
   for(var i = 0; i < polyCoords.length; i++){
     coordsString += `${polyCoords[i].lat},${polyCoords[i].lng}${i + 1 === polyCoords.length ? '' : ':'}`;
   }
-  return `https://data.police.uk/api/crimes-street/all-crime?poly=${coordsString}&date=2022-01`;
+  return `https://data.police.uk/api/crimes-street/all-crime?poly=${coordsString}&date=${year}-${month}`;
 };
 
 function api<T>(uri: string) : Promise<T> {

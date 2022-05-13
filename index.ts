@@ -107,7 +107,7 @@ function initMap(): void {
       let apiUri = createPoliceApiUri(coords, value.year, value.month);      
       api<Crime[]>(apiUri)
       .then(crimes => {
-      results.innerHTML += `<h2>For year:${value.year} and month:${value.month}</h2>`
+      results.innerHTML += `<h2>${crimes.length} crimes reported for year:${value.year} and month:${value.month}</h2>`
       crimes.forEach(function(value){        
         results.innerHTML += `<br />${JSON.stringify(value)}`
       })      

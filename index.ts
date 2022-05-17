@@ -14,34 +14,41 @@ function initMap(): void {
     document.getElementById("map") as HTMLElement,
     {
       center: { lat: 51.945039211681134, lng: -0.27699263419649245 },
-      zoom: 17,
+      zoom: 17
     }
   );
+
+  const resetButton = document.getElementById("resetMap") as HTMLButtonElement;
+  resetButton?.addEventListener('click', function handleResetMapClick(event){        
+    initMap();
+    const info = document.getElementById('info') as HTMLElement;
+    info.innerHTML = '';
+  });
   
   const drawingManager = new google.maps.drawing.DrawingManager({
-    drawingMode: google.maps.drawing.OverlayType.MARKER,
+    drawingMode: google.maps.drawing.OverlayType.POLYGON,
     drawingControl: true,
     drawingControlOptions: {
       position: google.maps.ControlPosition.TOP_CENTER,
       drawingModes: [
-        google.maps.drawing.OverlayType.MARKER,
-        google.maps.drawing.OverlayType.CIRCLE,
+        //google.maps.drawing.OverlayType.MARKER,
+        //google.maps.drawing.OverlayType.CIRCLE,
         google.maps.drawing.OverlayType.POLYGON,
-        google.maps.drawing.OverlayType.POLYLINE,
-        google.maps.drawing.OverlayType.RECTANGLE,
+        //google.maps.drawing.OverlayType.POLYLINE,
+        //google.maps.drawing.OverlayType.RECTANGLE,
       ],
     },
     markerOptions: {
-      icon: "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png",
+     icon: "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png",
     },
-    circleOptions: {
-      fillColor: "#ffff00",
-      fillOpacity: 1,
-      strokeWeight: 5,
-      clickable: false,
-      editable: true,
-      zIndex: 1,
-    },
+    // circleOptions: {
+    //  fillColor: "#ffff00",
+    //  fillOpacity: 1,
+    //  strokeWeight: 5,
+    //  clickable: false,
+    //  editable: true,
+    //  zIndex: 1,
+    // },
   });
 
   interface Crime {
@@ -74,8 +81,10 @@ function initMap(): void {
       }
     });
     console.log(JSON.stringify(coords, null, 1));
+
+
     
-    var results = document.getElementById('info');
+    const results = document.getElementById('info') as HTMLElement;
     //results.innerHTML = JSON.stringify(coords, null, 1);
 
     for(var i = 0; i < coords.length; i++){
@@ -83,28 +92,31 @@ function initMap(): void {
     }
 
     let yearAndMonth: {year: number, month: number}[] = [
-      {"year": 2019, "month": 10},
-      {"year": 2019, "month": 11},
-      {"year": 2019, "month": 12},
-      {"year": 2020, "month": 1},
-      {"year": 2020, "month": 2},
-      {"year": 2020, "month": 3},
-      {"year": 2020, "month": 10},
-      {"year": 2020, "month": 11},
-      {"year": 2020, "month": 12},
-      {"year": 2021, "month": 1},
-      {"year": 2021, "month": 2},
-      {"year": 2021, "month": 3},
-      {"year": 2021, "month": 10},
-      {"year": 2021, "month": 11},
-      {"year": 2021, "month": 12},
-      {"year": 2022, "month": 1},
-      {"year": 2022, "month": 2},
+      // {"year": 2019, "month": 10},
+      // {"year": 2019, "month": 11},
+      // {"year": 2019, "month": 12},
+      // {"year": 2020, "month": 1},
+      // {"year": 2020, "month": 2},
+      // {"year": 2020, "month": 3},
+      // {"year": 2020, "month": 10},
+      // {"year": 2020, "month": 11},
+      // {"year": 2020, "month": 12},
+      // {"year": 2021, "month": 1},
+      // {"year": 2021, "month": 2},
+      // {"year": 2021, "month": 3},
+      // {"year": 2021, "month": 10},
+      // {"year": 2021, "month": 11},
+      // {"year": 2021, "month": 12},
+      // {"year": 2022, "month": 1},
+      // {"year": 2022, "month": 2},
       {"year": 2022, "month": 3}
     ];
 
     yearAndMonth.forEach(function(value){
-      let apiUri = createPoliceApiUri(coords, value.year, value.month);      
+      let apiUri = createPoliceApiUri(coords, value.year, value.month);
+      
+      setTimeout(() => { let foo = 1 === 1; }, 100);
+
       api<Crime[]>(apiUri)
       .then(crimes => {
       results.innerHTML += `<h2>${crimes.length} crimes reported for year:${value.year} and month:${value.month}</h2>`
